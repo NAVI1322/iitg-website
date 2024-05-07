@@ -71,7 +71,7 @@ export default function BlogEditor() {
         <Input type="file" onChange={handleFileChange} />
       </div>
       <Editor
-        apiKey="xdpdl88dpvddewkbah9uin6yzndrpugmhg8dpy2javcw86yl"
+        apiKey={process.env.TINYMCE_API}
         init={{
           plugins:
             "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown",
