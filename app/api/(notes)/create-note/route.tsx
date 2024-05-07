@@ -3,15 +3,19 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-const handler = async (req: Request) => {
-  const { title, content, imageUrl ,authorEmail, authorId } = await req.json();
-
+export const POST = async (req: Request) => {
+  const { title, imageUrl, authorEmail, authorId } = await req.json();
   try {
-    const res = await prisma.blog.create({
+    const res = await prisma.note.create({
       data: {
         title,
-        content,
-        imageUrl,
+        images: {
+          create: [
+            {
+              url: imageUrl,
+            },
+          ],
+        },
         author: {
           connect: {
             email: authorEmail,
@@ -20,11 +24,8 @@ const handler = async (req: Request) => {
         },
       },
     });
-    return NextResponse.json(res);
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: "Something went wrong" });
   }
 };
-
-export { handler as POST };

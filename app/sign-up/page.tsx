@@ -17,7 +17,7 @@ export default function Component() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (!email.endsWith("@op.iitg.ac.in")) {
+    if (!email.endsWith("@op.iitg.ac.in" || !email.endsWith("@iitg.ac.in"))) {
       alert("Please use IITG email");
       return;
     }
