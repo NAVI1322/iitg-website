@@ -9,16 +9,25 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-
 export default function Component() {
-    const router = useRouter();
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setIsLoading] = useState(false);
-  const [blogs, setBlogs] = useState([]);
+  const [notes, setNotes] = useState([]);
 
-  
+  const fetchAllNotes = async () => {
+    try {
+      const res = await axios.get("/api/get-all-notes");
+      console.log(res);
+      setNotes(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  
+  useEffect(() => {
+    fetchAllNotes();
+  }, [session]);
 
   if (status === "loading") {
     return (
@@ -41,13 +50,13 @@ export default function Component() {
   const deleteBlog = async (id: any) => {
     try {
       const res = await axios.post("/api/delete-blog", {
-        id: id
+        id: id,
       });
       console.log(res);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <main>
@@ -57,10 +66,11 @@ export default function Component() {
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl flex flex-col gap-3 font-bold text-gray-900 dark:text-gray-100">
               Notes
-              <Button onClick={() => router.push("/create-note")}>Create new note</Button>
-
+              <Button onClick={() => router.push("/create-note")}>
+                Create new note
+              </Button>
             </h1>
-            
+
             <div className="relative w-full max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <SearchIcon className="h-5 w-5 text-gray-400" />
@@ -71,17 +81,15 @@ export default function Component() {
                 type="text"
               />
             </div>
-            
           </div>
-
-          
-            
+          {loading ? (
+            <div className="text-gray-900 dark:text-gray-100 text-xl font-semibold">
+              Loading...
+            </div>
+          ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              
-                <div
-                
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-                >
+              {notes.map((note) => (
+                <div key={note.title} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                   <img
                     alt="Blog Post Image"
                     className="w-full h-48 object-cover"
@@ -95,9 +103,8 @@ export default function Component() {
                   />
                   <div className="p-6">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                      "HI"
+                      {note.title}
                     </h2>
-                    
 
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400 text-sm">
@@ -112,9 +119,9 @@ export default function Component() {
                     </div>
                   </div>
                 </div>
-              
+              ))}
             </div>
-          
+          )}
         </div>
       </div>
     </main>
