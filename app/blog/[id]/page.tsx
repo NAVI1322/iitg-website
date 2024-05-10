@@ -16,7 +16,7 @@ const page = ({ params }: { params: { id: number } }) => {
   const [blog, setBlog] = useState();
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-  const [commentArray, setCommentArray] = useState([]);
+  const [commentArray,  setCommentArray] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getComments = async () => {
@@ -51,6 +51,7 @@ const page = ({ params }: { params: { id: number } }) => {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log(name);
       const res = await axios.post("/api/create-comment", {
         content: comment,
         name: name,
