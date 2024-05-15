@@ -6,6 +6,14 @@ const prisma = new PrismaClient();
 export const POST = async (req: Request) => {
     const body = await req.json();
     try {
+
+        await prisma.comment.deleteMany({
+            where: {
+                blogId: body.id
+            },
+        });
+
+
         const res = await prisma.blog.delete({
             where: {
                 id: body.id
@@ -14,5 +22,6 @@ export const POST = async (req: Request) => {
         return NextResponse.json(res);
     } catch (error) {
         console.log(error)
+
     }
 } 

@@ -12,10 +12,16 @@ export const GET = async (req: Request, { params }: { params: { id: string } }) 
             },
         });
 
+        const images = await prisma.image.findMany({
+            where: {
+                noteId: parseInt(noteID),
+            },
+        })
+
         if (note) {
-            return NextResponse.json(note);
+            return NextResponse.json({ note, images });
         } else {
-            return NextResponse.json({ message: 'Blog post not found' }, { status: 404 });
+            return NextResponse.json({ message: 'note not found' }, { status: 404 });
         }
     } catch (error) {
         console.error('Error fetching blog post:', error);

@@ -26,9 +26,7 @@ export default function Component() {
   const fetchMyBlogs = async () => {
     try {
       setIsLoading(true);
-      const res = await axios.post("/api/get-my-blogs", {
-        id: session?.user?.id,
-      });
+      const res = await axios.get("/api/get-all-blogs");
       if (Array.isArray(res.data)) {
         setBlogs(res.data);
       } else {
@@ -56,14 +54,7 @@ export default function Component() {
     );
   }
 
-  if (status === "unauthenticated") {
-    return (
-      <div>
-        <Navbar />
-        <h1 className="text-6xl mt-36">Log in to view this page</h1>
-      </div>
-    );
-  }
+  
 
   const deleteBlog = async (id: any) => {
     try {
@@ -83,7 +74,7 @@ export default function Component() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Blog Posts
+              All Blogs
             </h1>
             <div className="relative w-full max-w-md">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

@@ -25,9 +25,9 @@ export default function Component() {
     }
   };
 
-  useEffect(() => {
-    fetchAllNotes();
-  }, [session]);
+  // useEffect(() => {
+  //   fetchAllNotes();
+  // }, [session]);
 
   if (status === "loading") {
     return (
@@ -66,9 +66,9 @@ export default function Component() {
           <div className="flex items-center justify-between mb-8">
             <h1 className="text-3xl flex flex-col gap-3 font-bold text-gray-900 dark:text-gray-100">
               Notes
-              <Button onClick={() => router.push("/create-note")}>
+              {/* <Button onClick={() => router.push("/create-note")}>
                 Create new note
-              </Button>
+              </Button> */}
             </h1>
 
             <div className="relative w-full max-w-md">
@@ -106,13 +106,14 @@ export default function Component() {
                       {note.title}
                     </h2>
 
+
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400 text-sm">
                         "today "
                       </span>
                       <Link
                         className="text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-500 font-medium"
-                        href={`/`}
+                        href={`/note/${note.id}`}
                       >
                         Read More
                       </Link>
@@ -120,6 +121,7 @@ export default function Component() {
                   </div>
                 </div>
               ))}
+              NO NOTES FOUND RIGHT NOW
             </div>
           )}
         </div>
