@@ -11,12 +11,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 
+interface CommentType {
+  id: number;
+  content: string;
+  name: string;
+
+}
+
+interface BlogType {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+
+}
+
+
+
 const page = ({ params }: { params: { id: number } }) => {
   const { data: session, status } = useSession();
-  const [blog, setBlog] = useState();
+  const [blog, setBlog] = useState<BlogType>();
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-  const [commentArray,  setCommentArray] = useState([]);
+  const [commentArray,  setCommentArray] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(false);
 
   const getComments = async () => {
@@ -55,7 +72,7 @@ const page = ({ params }: { params: { id: number } }) => {
       const res = await axios.post("/api/create-comment", {
         content: comment,
         name: name,
-        authorId: session?.user?.id,
+        authorId: session?.user?.id ?? "",
         blogId: params.id,
       });
       alert("comment added");
@@ -87,7 +104,7 @@ const page = ({ params }: { params: { id: number } }) => {
               </div>
             </div>
           </div>
-          <div dangerouslySetInnerHTML={{ __html: blog?.content }}></div>
+          <div dangerouslySetInnerHTML={{ __html: blog?.content ?? "" }}></div>
         </article>
         <div className="mt-12 border-t pt-6">
           <h2 className="text-2xl font-bold">Comments</h2>

@@ -56,16 +56,7 @@ export default function Component() {
 
   
 
-  const deleteBlog = async (id: any) => {
-    try {
-      const res = await axios.post("/api/delete-blog", {
-        id: id
-      });
-      console.log(res);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  
 
   return (
     <main>
@@ -119,33 +110,7 @@ export default function Component() {
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                       {title}
                     </h2>
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <img
-                          src="/delete.svg"
-                          alt=""
-                          className="w-5 h-5 cursor-pointer"
-                        />
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you absolutely sure?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete this blog
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => {
-                            deleteBlog(id)
-                            setBlogs(blogs.filter((blog: { id: string }) => blog.id !== id))
-                          }}>Continue</AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    
 
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400 text-sm">
