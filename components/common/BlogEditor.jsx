@@ -19,7 +19,7 @@ export default function BlogEditor() {
   const authorEmail = session?.user?.email || "";
   const authorId = session?.user?.id || "";
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!file) {
@@ -54,7 +54,7 @@ export default function BlogEditor() {
     }
   };
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e) => {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
@@ -82,13 +82,13 @@ export default function BlogEditor() {
             { value: "First.Name", title: "First Name" },
             { value: "Email", title: "Email" },
           ],
-          ai_request: (request: any, respondWith: any) =>
+          ai_request: (request, respondWith) =>
             respondWith.string(() =>
               Promise.reject("See docs to implement AI Assistant")
             ),
         }}
         initialValue="Write your blog here"
-        onEditorChange={(content: any) => setContent(content)}
+        onEditorChange={(content) => setContent(content)}
       />
       <Button onClick={handleSubmit} disabled={loading}>Submit</Button>
     </div>

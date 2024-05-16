@@ -27,13 +27,10 @@ export default function Component() {
     try {
       setIsLoading(true);
       const res = await axios.get("/api/get-all-blogs");
-      if (Array.isArray(res.data)) {
-        setBlogs(res.data);
-      } else {
-        console.error('res.data is not an array:', res.data);
-        setBlogs([]); // set blogs to an empty array if res.data is not an array
-      }
-      console.log(res);
+
+      setBlogs(res.data);
+
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -54,9 +51,9 @@ export default function Component() {
     );
   }
 
-  
 
-  
+
+
 
   return (
     <main>
@@ -110,7 +107,7 @@ export default function Component() {
                     <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                       {title}
                     </h2>
-                    
+
 
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400 text-sm">

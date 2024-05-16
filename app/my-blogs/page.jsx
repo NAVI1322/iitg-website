@@ -65,7 +65,7 @@ export default function Component() {
     );
   }
 
-  const deleteBlog = async (id: any) => {
+  const deleteBlog = async (id) => {
     try {
       const res = await axios.post("/api/delete-blog", {
         id: id
@@ -150,7 +150,7 @@ export default function Component() {
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction onClick={() => {
                             deleteBlog(id)
-                            setBlogs(blogs.filter((blog: { id: string }) => blog.id !== id))
+                            setBlogs(blogs.filter((blog) => blog.id !== id))
                           }}>Continue</AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -178,7 +178,7 @@ export default function Component() {
   );
 }
 
-function SearchIcon(props: any) {
+function SearchIcon(props) {
   return (
     <svg
       {...props}

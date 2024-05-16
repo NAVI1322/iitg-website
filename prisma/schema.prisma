@@ -65,3 +65,10 @@ model Image {
   noteId Int
   note   Note   @relation(fields: [noteId], references: [id])
 }
+
+model Admin {
+  id Int @id @default(autoincrement())
+  username String @unique
+  passcode String 
+  hasFullAccess Boolean @default(false)
+}

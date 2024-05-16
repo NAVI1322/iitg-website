@@ -31,12 +31,12 @@ const page = () => {
     );
   }
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e) => {
     console.log(e.target.files[0]);
     setFile(e.target.files[0]);
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
       return;
@@ -58,8 +58,7 @@ const page = () => {
         title,
         imageUrl: "d2tiq8xmlq55pn.cloudfront.net/" + data.fileName,
         authorEmail: session?.user?.email,
-        authorId: session?.user?.id
-        
+        authorId: session?.user?.id,
       })
       console.log(res);
     } catch (error) {

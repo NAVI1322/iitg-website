@@ -11,29 +11,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 
-interface CommentType {
-  id: number;
-  content: string;
-  name: string;
-
-}
-
-interface BlogType {
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-
-}
 
 
 
-const page = ({ params }: { params: { id: number } }) => {
+
+const page = ({ params }) => {
   const { data: session, status } = useSession();
-  const [blog, setBlog] = useState<BlogType>();
+  const [blog, setBlog] = useState();
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-  const [commentArray,  setCommentArray] = useState<CommentType[]>([]);
+  const [commentArray,  setCommentArray] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getComments = async () => {
@@ -64,7 +51,7 @@ const page = ({ params }: { params: { id: number } }) => {
     getComments();
   }, [comment]);
 
-  const createComment = async (e: any) => {
+  const createComment = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -72,8 +59,7 @@ const page = ({ params }: { params: { id: number } }) => {
       const res = await axios.post("/api/create-comment", {
         content: comment,
         name: name,
-        authorId: session?.user?.id ?? "",
-        blogId: params.id,
+        authorId: session?.user?.id || "", 
       });
       alert("comment added");
     } catch (error) {
@@ -165,7 +151,7 @@ const page = ({ params }: { params: { id: number } }) => {
 
 export default page;
 
-function CalendarIcon(props: any) {
+function CalendarIcon(props) {
   return (
     <svg
       {...props}
@@ -187,7 +173,7 @@ function CalendarIcon(props: any) {
   );
 }
 
-function UserIcon(props: any) {
+function UserIcon(props) {
   return (
     <svg
       {...props}

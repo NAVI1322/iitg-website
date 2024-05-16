@@ -4,11 +4,20 @@ import Navbar from '@/components/common/Navbar'
 import React, { useEffect, useState } from 'react'
 
 
+interface Note {
+  title: string;
+  content: string;
+}
+
+interface Image {
+  url: string;
+}
+
 
 const page = ({ params }: { params: { id: number } }) => {
 
-  const [images, setImages] = useState([]);
-  const [note, setNote] = useState([]);
+  const [images, setImages] = useState<Image[]>([]);
+  const [note, setNote] = useState<Note>({ title: "", content: "" });
 
 
 

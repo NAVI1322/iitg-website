@@ -9,11 +9,19 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
+interface Note {
+  id: string;
+  title: string;
+  content: string;
+
+}
+
+
 export default function Component() {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [loading, setIsLoading] = useState(false);
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<Note[]>([]);
 
   const fetchAllNotes = async () => {
     try {
@@ -25,9 +33,9 @@ export default function Component() {
     }
   };
 
-  // useEffect(() => {
-  //   fetchAllNotes();
-  // }, [session]);
+  useEffect(() => {
+    fetchAllNotes();
+  }, [session]);
 
   if (status === "loading") {
     return (
@@ -47,16 +55,7 @@ export default function Component() {
     );
   }
 
-  const deleteBlog = async (id: any) => {
-    try {
-      const res = await axios.post("/api/delete-blog", {
-        id: id,
-      });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  
 
   return (
     <main>
@@ -121,7 +120,7 @@ export default function Component() {
                   </div>
                 </div>
               ))}
-              NO NOTES FOUND RIGHT NOW
+              
             </div>
           )}
         </div>
