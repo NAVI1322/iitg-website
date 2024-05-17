@@ -20,10 +20,9 @@ export default function Component() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        },
-        next: {
-          revalidate: 0
+          "Cache-Control": "no-cache"  // Prevents caching on the browser side
         }
+
       
       });
       
