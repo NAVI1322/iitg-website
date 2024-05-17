@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/create-note/page.jsx", "app/blog/[id]/page.jsx", "lib/auth.js", "components/common/BlogEditor.jsx", "app/my-blogs/page.jsx", "app/blogs/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/create-note/page.jsx", "app/blog/[id]/page.jsx", "lib/auth.js", "components/common/BlogEditor.jsx", "app/my-blogs/page.jsx", "app/blogs/page.tsx"],
   "exclude": ["node_modules"]
 }
