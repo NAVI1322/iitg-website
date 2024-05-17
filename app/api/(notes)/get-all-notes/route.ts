@@ -9,6 +9,9 @@ export const GET = async () => {
             include: {
                 author: true,
                 images: true
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
 

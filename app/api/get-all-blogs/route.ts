@@ -7,7 +7,7 @@ export const GET = async () => {
     try {
         const res = await prisma.blog.findMany({
             orderBy: {
-            createdAt: 'desc'
+                createdAt: 'desc'
             }
         });
         console.log(res)

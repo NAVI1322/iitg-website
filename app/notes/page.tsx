@@ -6,7 +6,7 @@ import Navbar from "@/components/common/Navbar";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button";
+import { lineSpinner } from "ldrs"
 import { useRouter } from "next/navigation";
 
 interface Note {
@@ -24,12 +24,15 @@ export default function Component() {
   const [notes, setNotes] = useState<Note[]>([]);
 
   const fetchAllNotes = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.get("/api/get-all-notes");
       console.log(res);
       setNotes(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -41,7 +44,8 @@ export default function Component() {
     return (
       <div>
         <Navbar />
-        <h1 className="text-6xl mt-36">Loading...</h1>
+        <h1 className="text-6xl mt-36">Loading...
+        </h1>
       </div>
     );
   }
@@ -50,12 +54,12 @@ export default function Component() {
     return (
       <div>
         <Navbar />
-        <h1 className="text-6xl mt-36">Log in to view this page</h1>
+        <h1 className="text-6xl m-36">Log in to view this page</h1>
       </div>
     );
   }
 
-  
+
 
   return (
     <main>
@@ -83,7 +87,7 @@ export default function Component() {
           </div>
           {loading ? (
             <div className="text-gray-900 dark:text-gray-100 text-xl font-semibold">
-              Loading...
+              just a sec..
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -120,7 +124,7 @@ export default function Component() {
                   </div>
                 </div>
               ))}
-              
+
             </div>
           )}
         </div>

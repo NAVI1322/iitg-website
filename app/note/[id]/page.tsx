@@ -17,20 +17,27 @@ interface Image {
 const page = ({ params }: { params: { id: number } }) => {
 
   const [images, setImages] = useState<Image[]>([]);
+  const [loading, setLoading] = useState(false);
   const [note, setNote] = useState<Note>({ title: "", content: "" });
 
 
 
-  const [title, setTitle] = useState("");
 
   const fetchNote = async () => {
-    const res = await fetch(`/api/get-note/${params.id}`)
-    const data = await res.json()
-    console.log(data)
-    const { note, images } = data;
-    setNote(note);
-    setImages(images);
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/get-note/${params.id}`)
+      const data = await res.json()
+      console.log(data)
+      const { note, images } = data;
+      setNote(note);
+      setImages(images);
 
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false);
+    }
   }
 
 
@@ -42,7 +49,10 @@ const page = ({ params }: { params: { id: number } }) => {
     <div className='h-screen w-screen flex flex-col items-center'>
       <Navbar />
       <div className='flex flex-col items-center'>
-        <h2 className='text-2xl font-bold'>{note.title}</h2>
+        {
+          loading && <h1 className='text-3xl'>Loading... </h1>
+        }
+        <h2 className='text-2xl font-bold mt-10'>{note.title}</h2>
         {images.map((image) => (
           <>
             <img src={`https://${image.url}`} alt="note image" width={500} height={500} />
@@ -55,7 +65,6 @@ const page = ({ params }: { params: { id: number } }) => {
         ))}
       </div>
 
-      <h2>{params.id}</h2>
     </div>
   )
 }

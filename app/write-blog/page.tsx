@@ -22,7 +22,7 @@ const page = () => {
     return (
       <div>
         <Navbar />
-        <h1 className="text-6xl mt-36">Log in to view this page</h1>
+        <h1 className="text-6xl m-36">Log in to view this page</h1>
       </div>
     );
   }
