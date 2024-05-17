@@ -18,13 +18,18 @@ export default function Component() {
       setIsLoading(true);
       const res = await fetch("/api/get-all-blogs", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
         next: {
-          revalidate: 0,
+          revalidate: 0
         }
+      
       });
+      
       const resJson = await res.json();
-
-      setBlogs(resJson.data);
+      console.log(resJson)
+      setBlogs(resJson);
 
 
     } catch (error) {
