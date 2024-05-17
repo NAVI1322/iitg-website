@@ -20,7 +20,7 @@ const page = ({ params }) => {
   const [blog, setBlog] = useState();
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-  const [commentArray,  setCommentArray] = useState([]);
+  const [commentArray, setCommentArray] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getComments = async () => {
@@ -59,7 +59,7 @@ const page = ({ params }) => {
       const res = await axios.post("/api/create-comment", {
         content: comment,
         name: name,
-        authorId: session?.user?.id || "", 
+        authorId: session?.user?.id || "",
       });
       alert("comment added");
     } catch (error) {
@@ -82,7 +82,7 @@ const page = ({ params }) => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                 <UserIcon className="h-4 w-4" />
-                <span>John</span>
+                {/* <span>Joh</span> */}
               </div>
               <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                 <CalendarIcon className="h-4 w-4" />
@@ -90,60 +90,63 @@ const page = ({ params }) => {
               </div>
             </div>
           </div>
-          <div dangerouslySetInnerHTML={{ __html: blog?.content ?? "" }}></div>
+          <div dangerouslySetInnerHTML={{ __html: blog?.content ?? "" }} ></div>
         </article>
-        <div className="mt-12 border-t pt-6">
-          <h2 className="text-2xl font-bold">Comments</h2>
-          <div className="mt-6 space-y-6">
-            {commentArray.map((comment) => (
-              <div key={comment.id} className="flex items-start gap-4">
-                <Avatar className="h-10 w-10 shrink-0 border">
-                  <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
-                  <AvatarFallback>AC</AvatarFallback>
-                </Avatar>
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="font-medium">{comment.name}</div>
-                    
+        <div className="">
+          <div className="mt-12 border-t pt-6">
+            <h2 className="text-2xl font-bold">Comments</h2>
+            <div className="mt-6 space-y-6">
+              {commentArray.map((comment) => (
+                <div key={comment.id} className="flex items-start gap-4">
+                  <Avatar className="h-10 w-10 shrink-0 border">
+                    <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
+                    <AvatarFallback>AC</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="font-medium">{comment.name}</div>
+
+                    </div>
+                    <p>
+                      {comment.content}
+                    </p>
                   </div>
-                  <p>
-                    {comment.content}
-                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className="mt-12 border-t pt-6">
+            <h2 className="text-2xl font-bold">Leave a Comment</h2>
+            {status === "authenticated" && (
+              <form className="mt-6 space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
+                <div>
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" placeholder="Your name" onChange={(e) => setName(e.target.value)} />
+                </div>
+                <div>
+                  <Label htmlFor="comment">Comment</Label>
+                  <Textarea
+                    id="comment"
+                    placeholder="Your comment"
+                    rows={5}
+                    onChange={(e) => setComment(e.target.value)}
+                    value={comment}
+                  />
+                </div>
+                <Button
+                  className="w-full sm:w-auto"
+                  type="submit"
+                  onClick={createComment}
+                  disabled={loading}
+                >
+                  {loading ? "Loading" : "Submit"}
+                </Button>
+              </form>
+            )}
           </div>
         </div>
-        <div className="mt-12 border-t pt-6">
-          <h2 className="text-2xl font-bold">Leave a Comment</h2>
-          {status === "authenticated" && (
-            <form className="mt-6 space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Your name" onChange={(e) => setName(e.target.value)}/>
-              </div>
-              <div>
-                <Label htmlFor="comment">Comment</Label>
-                <Textarea
-                  id="comment"
-                  placeholder="Your comment"
-                  rows={5}
-                  onChange={(e) => setComment(e.target.value)}
-                  value={comment}
-                />
-              </div>
-              <Button
-                className="w-full sm:w-auto"
-                type="submit"
-                onClick={createComment}
-                disabled={loading}
-              >
-                {loading ? "Loading" : "Submit"}
-              </Button>
-            </form>
-          )}
-        </div>
+
       </div>
     </>
   );
