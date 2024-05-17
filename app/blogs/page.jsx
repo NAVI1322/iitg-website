@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/common/Navbar";
 import { useSession } from "next-auth/react";
 import useSWR, { mutate } from 'swr';
+import { useEffect } from "react";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
@@ -18,6 +19,10 @@ export default function Component() {
       refreshInterval: 0, // Disable automatic revalidation
     }
   );
+
+  useEffect(() => {
+    mutate('/api/get-all-blogs')
+  }, [])
 
   if (status === "loading") {
     return (
