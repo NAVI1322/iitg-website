@@ -4,33 +4,20 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Navbar from "@/components/common/Navbar";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import useSWR, { mutate } from 'swr';
 
+const fetcher = (...args) => fetch(...args).then(res => res.json());
 
 export default function Component() {
   const { data: session, status } = useSession();
-  const [loading, setIsLoading] = useState(false);
-  const [blogs, setBlogs] = useState([]);
-
-  const fetchMyBlogs = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get("/api/get-all-blogs");
-
-      setBlogs(res.data);
-
-
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+  const { data: blogs, isValidating } = useSWR(
+    session ? '/api/get-all-blogs' : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      refreshInterval: 0, // Disable automatic revalidation
     }
-  };
-
-  useEffect(() => {
-    fetchMyBlogs();
-  }, [session]);
+  );
 
   if (status === "loading") {
     return (
@@ -40,10 +27,6 @@ export default function Component() {
       </div>
     );
   }
-
-
-
-
 
   return (
     <main>
@@ -66,7 +49,7 @@ export default function Component() {
             </div>
           </div>
 
-          {loading ? (
+          {!blogs ? (
             <div className="text-gray-900 dark:text-gray-100 text-xl font-semibold">
               Loading...
             </div>
@@ -76,7 +59,6 @@ export default function Component() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-
               {blogs.map(({ id, title, imageUrl, description, createdAt }) => (
                 <div
                   key={id}
@@ -98,7 +80,6 @@ export default function Component() {
                       {title}
                     </h2>
 
-
                     <div className="flex items-center justify-between">
                       <span className="text-gray-500 dark:text-gray-400 text-sm">
                         {createdAt}
@@ -115,13 +96,19 @@ export default function Component() {
               ))}
             </div>
           )}
+          <button
+            onClick={() => mutate('/api/get-all-blogs')}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded"
+          >
+            Refresh Blogs
+          </button>
         </div>
       </div>
     </main>
   );
 }
 
-function SearchIcon(props: any) {
+function SearchIcon(props) {
   return (
     <svg
       {...props}
