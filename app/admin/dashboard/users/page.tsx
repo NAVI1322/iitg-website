@@ -27,6 +27,17 @@ const page = () => {
         }
     }
 
+    const deleteUser = async (email: any) => {
+        try {
+            const res = await axios.post('/api/delete-user', {
+                email
+            })
+            console.log(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         const admin = localStorage.getItem('admin');
         if (admin) {
@@ -63,6 +74,7 @@ const page = () => {
                             users.map((user, index) => (
                                 <div key={index}>
                                     <p>{user.email}</p>
+                                    <button onClick={() => deleteUser(user.email)}>delete user</button>
                                 </div>
                             ))
                         }

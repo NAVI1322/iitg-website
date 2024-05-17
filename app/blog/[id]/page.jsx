@@ -35,11 +35,14 @@ const page = ({ params }) => {
 
   const getBlog = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(`/api/get-blog/${params.id}`);
       console.log(res.data);
       setBlog(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,81 +76,91 @@ const page = ({ params }) => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
-        <article className="prose prose-gray mx-auto dark:prose-invert">
-          <div className="space-y-2 not-prose">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
-              {blog?.title}
-            </h1>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
-                <UserIcon className="h-4 w-4" />
-                {/* <span>Joh</span> */}
-              </div>
-              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
-                <CalendarIcon className="h-4 w-4" />
-                <span>{blog?.createdAt}</span>
-              </div>
-            </div>
+      {
+        loading ? (
+          <div className="m-10 text-3xl">
+            Loading...
           </div>
-          <div dangerouslySetInnerHTML={{ __html: blog?.content ?? "" }} ></div>
-        </article>
-        <div className="">
-          <div className="mt-12 border-t pt-6">
-            <h2 className="text-2xl font-bold">Comments</h2>
-            <div className="mt-6 space-y-6">
-              {commentArray.map((comment) => (
-                <div key={comment.id} className="flex items-start gap-4">
-                  <Avatar className="h-10 w-10 shrink-0 border">
-                    <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
-                    <AvatarFallback>AC</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium">{comment.name}</div>
-
-                    </div>
-                    <p>
-                      {comment.content}
-                    </p>
+        ) : (
+          <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
+            <article className="prose prose-gray mx-auto dark:prose-invert">
+              <div className="space-y-2 not-prose">
+                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
+                  {blog?.title}
+                </h1>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                    <UserIcon className="h-4 w-4" />
+                    {/* <span>Joh</span> */}
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                    <CalendarIcon className="h-4 w-4" />
+                    <span>{blog?.createdAt}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="mt-12 border-t pt-6">
-            <h2 className="text-2xl font-bold">Leave a Comment</h2>
-            {status === "authenticated" && (
-              <form className="mt-6 space-y-4">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
-                <div>
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" placeholder="Your name" onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div>
-                  <Label htmlFor="comment">Comment</Label>
-                  <Textarea
-                    id="comment"
-                    placeholder="Your comment"
-                    rows={5}
-                    onChange={(e) => setComment(e.target.value)}
-                    value={comment}
-                  />
-                </div>
-                <Button
-                  className="w-full sm:w-auto"
-                  type="submit"
-                  onClick={createComment}
-                  disabled={loading}
-                >
-                  {loading ? "Loading" : "Submit"}
-                </Button>
-              </form>
-            )}
-          </div>
-        </div>
+              </div>
+              <div dangerouslySetInnerHTML={{ __html: blog?.content ?? "" }} ></div>
+            </article>
+            <br />
+            <div className="">
+              <div className="mt-12 border-t pt-6">
+                <h2 className="text-2xl font-bold">Comments</h2>
+                <div className="mt-6 space-y-6">
+                  {commentArray.map((comment) => (
+                    <div key={comment.id} className="flex items-start gap-4">
+                      <Avatar className="h-10 w-10 shrink-0 border">
+                        <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
+                        <AvatarFallback>AC</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="font-medium">{comment.name}</div>
 
-      </div>
+                        </div>
+                        <p>
+                          {comment.content}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-12 border-t pt-6">
+                <h2 className="text-2xl font-bold">Leave a Comment</h2>
+                {status === "authenticated" && (
+                  <form className="mt-6 space-y-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2"></div>
+                    <div>
+                      <Label htmlFor="name">Name</Label>
+                      <Input id="name" placeholder="Your name" onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div>
+                      <Label htmlFor="comment">Comment</Label>
+                      <Textarea
+                        id="comment"
+                        placeholder="Your comment"
+                        rows={5}
+                        onChange={(e) => setComment(e.target.value)}
+                        value={comment}
+                      />
+                    </div>
+                    <Button
+                      className="w-full sm:w-auto"
+                      type="submit"
+                      onClick={createComment}
+                      disabled={loading}
+                    >
+                      {loading ? "Loading" : "Submit"}
+                    </Button>
+                  </form>
+                )}
+              </div>
+            </div>
+
+          </div>
+        )
+      }
+
     </>
   );
 };
