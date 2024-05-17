@@ -22,6 +22,7 @@ const page = ({ params }) => {
   const [comment, setComment] = useState("");
   const [commentArray, setCommentArray] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
 
   const getComments = async () => {
     try {
@@ -56,19 +57,21 @@ const page = ({ params }) => {
 
   const createComment = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setCommentLoading(true);
     try {
       console.log(name);
       const res = await axios.post("/api/create-comment", {
         content: comment,
         name: name,
+        blogId: params.id,
         authorId: session?.user?.id || "",
       });
       alert("comment added");
     } catch (error) {
       console.log(error);
+      alert("error");
     } finally {
-      setLoading(false);
+      setCommentLoading(false);
       setComment("");
     }
   };
@@ -85,13 +88,13 @@ const page = ({ params }) => {
           <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
             <article className="prose prose-gray mx-auto dark:prose-invert">
               <div className="space-y-2 not-prose">
-                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
+                <h1 className="font-serif">
                   {blog?.title}
                 </h1>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                     <UserIcon className="h-4 w-4" />
-                    {/* <span>Joh</span> */}
+                    
                   </div>
                   <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                     <CalendarIcon className="h-4 w-4" />
@@ -148,9 +151,9 @@ const page = ({ params }) => {
                       className="w-full sm:w-auto"
                       type="submit"
                       onClick={createComment}
-                      disabled={loading}
+                      disabled={commentLoading}
                     >
-                      {loading ? "Loading" : "Submit"}
+                      {commentLoading ? "Loading" : "Submit"}
                     </Button>
                   </form>
                 )}
