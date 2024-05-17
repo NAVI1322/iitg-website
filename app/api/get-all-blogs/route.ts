@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export const GET = async () => {
+export const POST = async (req: Request) => {
+    const data = await req.json();
     try {
         const res = await prisma.blog.findMany({
             orderBy: {

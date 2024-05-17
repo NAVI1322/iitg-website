@@ -16,14 +16,8 @@ export default function Component() {
   const fetchMyBlogs = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/get-all-blogs", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache"  // Prevents caching on the browser side
-        }
-
-      
+      const res = await axios.post("/api/get-all-blogs", {
+        userId: session.user.id,
       });
       
       const resJson = await res.json();
@@ -131,7 +125,7 @@ export default function Component() {
   );
 }
 
-function SearchIcon(props: any) {
+function SearchIcon(props) {
   return (
     <svg
       {...props}
