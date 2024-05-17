@@ -40,7 +40,7 @@ export default function Component() {
 
   useEffect(() => {
     fetchMyBlogs();
-  }, [session]);
+  }, []);
 
   if (status === "loading") {
     return (
