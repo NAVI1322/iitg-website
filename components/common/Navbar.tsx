@@ -14,9 +14,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { getUser } from "@/hooks/cookieData";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
+  const [user, setUser] = useState<string | null>('');
+  
   const router = useRouter();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const deleteUser = async () => {
@@ -30,6 +33,24 @@ const Navbar = () => {
     }
   };
 
+  
+  useEffect(()=>{
+  async function userExist(){
+    const { user, error } = await getUser();
+    console.log(user)
+    setUser(user);
+
+  }
+  userExist();
+  },[router])
+    
+
+  
+      
+
+      
+      
+   
   const handleScroll = () => {
     const scrollPosition = window.pageYOffset;
     setIsNavbarVisible(scrollPosition < 100);
@@ -101,17 +122,20 @@ const Navbar = () => {
                 <li>
                   <Link href="/my-blogs">My blogs</Link>
                 </li>
-                {status == "unauthenticated" ? (
+                {user === null ? (
                   <li
-                    className="cursor-pointer"
-                    onClick={() => router.push("/sign-up")}
-                  >
-                    Login
-                  </li>
+                  className="cursor-pointer"
+                  onClick={() => router.push("/sign-up")}
+                >
+                  Login
+                </li>
+                
                 ) : (
                   <li className="cursor-pointer" onClick={() => signOut()}>
-                    Logout
+                  Logout
                   </li>
+                 
+                  
                 )}
               </ul>
             </SheetHeader>

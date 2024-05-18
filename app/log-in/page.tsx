@@ -1,28 +1,25 @@
 "use client";
 
-
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/common/Navbar";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export default function Component() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
-  const router = useRouter();
+  const router = useRouter()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    // if (!email.endsWith("@op.iitg.ac.in") && !email.endsWith("@iitg.ac.in")) {
+    // if (!email.endsWith("@op.iitg.ac.in" || !email.endsWith("@iitg.ac.in"))) {
     //   alert("Please use IITG email");
     //   return;
     // }
@@ -32,33 +29,29 @@ export default function Component() {
     //   return;
     // }
 
-    try {
-      const response = await axios.post("/api/auth/create-user", {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-
-    
-
-      if(response.data.message=="User already exists")
-      {
-        alert("User already Exist, please Login")
-        return
-      }
-      alert(response.data.message);
-      const token= response.data.token;
-      console.log("token  :" + token)
-      localStorage.setItem("token", token);
-
-      router.push(`/`);
+    async function Handle_Login() {
+        try {
+            const response = await axios.post("/api/auth/login-user", {
+                email,
+                password
+            });
+            alert(response.data.message);
+           
+          router.push("/")
+      
+         
+      
+        } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred while logging in. Please try again.");
+        }
 
 
-    } catch (error) {
-      console.log(error);
     }
-  };
+
+    Handle_Login();
+}
+
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -67,22 +60,12 @@ export default function Component() {
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-md space-y-6">
             <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold">Sign Up</h1>
+              <h1 className="text-3xl font-bold">Login</h1>
               <p className="text-gray-500 dark:text-gray-400">
-                Enter your information to create an account
+                Enter your information to login an account
               </p>
             </div>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="first-name">First name</Label>
-                  <Input id="first-name" placeholder="Lee" required onChange={(e) => setFirstName(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="last-name">Last name</Label>
-                  <Input id="last-name" placeholder="Robinson" required onChange={(e) => setLastName(e.target.value)}/>
-                </div>
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -102,9 +85,9 @@ export default function Component() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <p>Already signed up? <Link className="text-blue-500" href="/log-in">Log in</Link></p>
+              <p>Create an Account? <Link className="text-blue-500" href="/api/auth/signin/">Sign Up</Link></p>
               <Button className="w-full" type="submit" onClick={handleSubmit}>
-                Sign Up
+                Login
               </Button>
             </div>
           </div>

@@ -16,7 +16,7 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        String      @id @default(uuid())
   firstName String?
   lastName  String?
   email     String    @unique
@@ -27,11 +27,11 @@ model User {
 }
 
 model Blog {
-  id        Int       @id @default(autoincrement())
+  id       String @id @default(uuid())
   title     String
   content   String?
   imageUrl  String?
-  authorId  Int
+  authorId  String
   author    User      @relation(fields: [authorId], references: [id])
   createdAt DateTime  @default(now())
   likes     Int       @default(0)
@@ -42,9 +42,9 @@ model Comment {
   id        Int      @id @default(autoincrement())
   content   String
   name      String?
-  authorId  Int
+  authorId  String
   author    User     @relation(fields: [authorId], references: [id])
-  blogId    Int
+  blogId   String
   blog      Blog     @relation(fields: [blogId], references: [id])
   createdAt DateTime @default(now())
 }
@@ -54,7 +54,7 @@ model Note {
   title     String
   content   String?
   images    Image[]
-  authorId  Int
+  authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
 }

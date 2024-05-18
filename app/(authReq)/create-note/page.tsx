@@ -17,19 +17,13 @@ const page = () => {
   if (status === "loading") {
     return (
       <div>
-        <Navbar />
+      
         <h1 className="text-6xl mt-36">Loading...</h1>
       </div>
     );
   }
-  if (status === "unauthenticated") {
-    return (
-      <div>
-        <Navbar />
-        <h1 className="text-6xl mt-36">Log in to view this page</h1>
-      </div>
-    );
-  }
+ 
+  
 
   const handleFileChange = (e: any) => {
     console.log(e.target.files[0]);
@@ -71,7 +65,7 @@ const page = () => {
 
   return (
     <div className="h-screen w-screen items-center flex flex-col">
-      <Navbar />
+      
       <div className="mt-10 w-3/4 flex flex-col gap-10">
         <div>
           <h2 className="mb-2">Title</h2>

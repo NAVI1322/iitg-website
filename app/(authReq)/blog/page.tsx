@@ -68,7 +68,7 @@ const page = ({ params }: { params: { id: number } }) => {
 
   return (
     <>
-      <Navbar />
+     
       <div className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
         <article className="prose prose-gray mx-auto dark:prose-invert">
           <div className="space-y-2 not-prose">

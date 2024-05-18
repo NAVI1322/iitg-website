@@ -9,7 +9,7 @@ import Link from "next/link"
 export default function Component() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
+      
       <main className="flex-1 bg-gray-100 dark:bg-gray-800 py-8 mt-32">
         <div className="container mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-900">
